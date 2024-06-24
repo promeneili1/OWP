@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kategorije Putovanja</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .table-container {
+            width: 60%; /* Adjusted width */
+            margin: 20px auto;
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        thead {
+            background-color: #007bff; /* Blue color */
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+            font-size: 16px;
+        }
+        tbody tr:nth-of-type(odd) {
+            background-color: #f8f9fa; /* Light gray color */
+        }
+        tbody tr:nth-of-type(even) {
+            background-color: #ffffff; /* White color */
+        }
+        .btn-edit, .btn-delete, .btn-add {
+            background-color: #007bff; /* Blue color */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            width: 200px;
+
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            margin-right: 10px;
+            display: inline-block; /* Ensures buttons stay inline */
+        }
+        .btn-add {
+            margin: 20px 0;
+            display: block; /* Make 'Dodaj novu kategoriju' button full width */
+        }
+        .btn-add:hover, .btn-edit:hover, .btn-delete:hover {
+            opacity: 0.8;
+            transition: 0.3s ease;
+        }
+        .btn-add:focus, .btn-edit:focus, .btn-delete:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="table-container">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Naziv Kategorije</th>
+            <th scope="col">Opis Kategorije</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Replace 'list' with your actual Thymeleaf variable name -->
+        <tr th:each="kategorija : ${list}">
+            <td th:text="${kategorija.getId()}"></td>
+            <td th:text="${kategorija.getNazivKategorije()}"></td>
+            <td th:text="${kategorija.getOpis()}"></td>
+            <td>
+                <!-- Adjust href to match your endpoint and variable names -->
+                <a th:href="@{'/kategorije/edit/' + ${kategorija.id}}" class="btn-edit">Izmeni</a>
+                <a th:href="@{'/kategorije/delete/' + ${kategorija.id}}" class="btn-delete">Obrisi</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Adjust href to match your endpoint -->
+    <a th:href="@{/kategorije/new}" class="btn-add">Dodaj novu kategoriju</a>
+</div>
+
+</body>
+</html>
