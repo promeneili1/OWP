@@ -7,7 +7,6 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
             margin: 0;
             display: flex;
             justify-content: center;
@@ -15,9 +14,8 @@
             min-height: 100vh;
         }
         .table-container {
-            width: 60%; /* Adjusted width */
+            width: 60%;
             margin: 20px auto;
-            border: 1px solid #dee2e6;
             border-radius: 0.25rem;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             overflow: hidden;
@@ -27,7 +25,6 @@
             border-collapse: collapse;
         }
         thead {
-            background-color: #007bff; /* Blue color */
             color: white;
             font-size: 18px;
             font-weight: bold;
@@ -35,37 +32,27 @@
         th, td {
             padding: 15px;
             text-align: left;
-            border-bottom: 1px solid #dee2e6;
             font-size: 16px;
         }
-        tbody tr:nth-of-type(odd) {
-            background-color: #f8f9fa; /* Light gray color */
-        }
-        tbody tr:nth-of-type(even) {
-            background-color: #ffffff; /* White color */
-        }
         .btn-edit, .btn-delete, .btn-add {
-            background-color: #007bff; /* Blue color */
-            color: white;
+
             padding: 10px 20px;
             border: none;
             width: 200px;
-
             border-radius: 5px;
-            text-decoration: none;
             font-size: 16px;
             margin-right: 10px;
-            display: inline-block; /* Ensures buttons stay inline */
+            display: inline-block;
         }
         .btn-add {
             margin: 20px 0;
-            display: block; /* Make 'Dodaj novu kategoriju' button full width */
+            display: block;
         }
-        .btn-add:hover, .btn-edit:hover, .btn-delete:hover {
+        .btn-add:hover, .btn-edit, .btn-delete {
             opacity: 0.8;
             transition: 0.3s ease;
         }
-        .btn-add:focus, .btn-edit:focus, .btn-delete:focus {
+        .btn-add:focus, .btn-edit, .btn-delete {
             outline: none;
         }
     </style>

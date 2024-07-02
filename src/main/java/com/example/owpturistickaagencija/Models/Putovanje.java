@@ -30,6 +30,8 @@ public class Putovanje {
     private LocalDateTime krajAkcije;
     private Double snizenaCena  = 0.0;
 
+
+
     public Putovanje() {}
 
     public Putovanje(Long id, PrevoznoSredstvo prevoznoSredstvo, SmestajnaJedinica smestajnaJedinica, String nazivDestinacije, KategorijaPutovanja kategorijaPutovanja, Long kategorijaPutovanjaId, LocalDateTime datumIVremePolaska, LocalDateTime datumIVremePovratka, Long brojNocenja, Long cenaAranzmana, Long ukupanBrojMesta, Long brojSlobodnihMesta) {

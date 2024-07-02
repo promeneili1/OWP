@@ -83,6 +83,10 @@ public class KategorijaPutovanjaController {
         kategorijaPutovanjaService.update(kategorijaPutovanja);
         ra.addFlashAttribute("message", "Kategorija je izmenjena");
         return "redirect:/kategorije";
+     /*   kategorijaPutovanjaService.update(kategorijaPutovanja) ;
+        ra.addFlashAttribute("message", "Kategorija je izmenjena");
+        return "redirect:/kategorije";
+      */
     }
 
 }

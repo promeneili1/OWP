@@ -48,7 +48,7 @@ public class IndexController {
             list = putovanjeService.searchPutovanjeByAmountRange(minCena, maxCena);
         } else {
             list = putovanjeService.findSortedPutovanje(order, orderBy);
-            // Filter out putovanja where brojSlobodnihMesta is not greater than 0
+            
             list = list.stream()
                     .filter(putovanje -> putovanje.getBrojSlobodnihMesta() != null && putovanje.getBrojSlobodnihMesta() > 0)
                     .collect(Collectors.toList());

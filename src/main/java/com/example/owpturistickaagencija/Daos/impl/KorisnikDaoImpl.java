@@ -177,8 +177,8 @@ public class KorisnikDaoImpl implements KorisnikDao {
     @Transactional
     @Override
     public int update(Korisnik korisnik) {
-        String sql = "UPDATE korisnici SET ime = ?, prezime = ? WHERE id = ?";
-        boolean uspeh = jdbcTemplate.update(sql, korisnik.getIme(), korisnik.getPrezime(), korisnik.getId()) == 1;
+        String sql = "UPDATE korisnici SET ime = ?, prezime = ?, lozinka = ? WHERE id = ?";
+        boolean uspeh = jdbcTemplate.update(sql, korisnik.getIme(), korisnik.getPrezime(), korisnik.getLozinka(), korisnik.getId()) == 1;
         return uspeh ? 1 : 0;
     }
 

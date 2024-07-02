@@ -1,6 +1,9 @@
 package com.example.owpturistickaagencija.Models;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.time.LocalDateTime;
+
 
 public class Rezervacija {
     private Long id ;
@@ -10,6 +13,8 @@ public class Rezervacija {
     private Putovanje putovanje;
     private Long kupacId;
     private Kupac kupac;
+
+    private String status;
 
     public Rezervacija(Long id, LocalDateTime datumIVremeRezervacije, Long brojPutnika, Putovanje putovanje, Kupac kupac){
         this.id = id;
@@ -78,5 +83,12 @@ public class Rezervacija {
     public void setKupac(Kupac kupac) {
         this.kupac = kupac;
         this.kupacId = kupac.getKorisnikId();
+    }
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

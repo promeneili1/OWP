@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Profil</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .center-content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+<div th:if="${uloga == 'ADMINISTRATOR'}" th:include="admin_navbar :: header"></div>
+<div th:if="${uloga == 'MENADZER'}" th:include="menadzer_navbar :: header"></div>
+<div th:if="${uloga == 'none'}" th:include="neulogovan_navbar :: header"></div>
+<div th:if="${uloga == 'KUPAC'}" th:include="kupac_navbar :: header"></div>
+
+<div class="center-content">
+  <div>
+    <h4>Korisnički profil</h4>
+    <div>
+      <strong>Email Adresa:</strong> <span th:text="${korisnik.emailAdresa}"></span>
+    </div>
+    <div>
+      <strong>Ime:</strong> <span th:text="${korisnik.ime}"></span>
+    </div>
+    <div>
+      <strong>Prezime:</strong> <span th:text="${korisnik.prezime}"></span>
+    </div>
+    <div>
+      <strong>JMBG:</strong> <span th:text="${korisnik.jmbg}"></span>
+    </div>
+    <div>
+      <strong>Adresa:</strong> <span th:text="${korisnik.adresa}"></span>
+    </div>
+    <div>
+      <strong>Broj telefona:</strong> <span th:text="${korisnik.brojTelefona}"></span>
+    </div>
+    <div>
+      <strong>Uloga:</strong> <span th:text="${korisnik.uloga}"></span>
+    </div>
+    <div>
+      <strong>Datum rođenja:</strong> <span th:text="${korisnik.datumRodjenja}"></span>
+    </div>
+    <div>
+      <strong>Datum i vreme registracije:</strong>
+      <span th:text="${#temporals.format(korisnik.datumIVremeRegistracije, 'dd.MM.yyyy HH:mm:ss')}"></span>
+    </div>
+    <br>
+    <a th:href="@{'/korisnici/edit/' + ${korisnik.id}}" class="btn btn-secondary btn-sm">Izmeni lične podatke</a>
+  </div>
+
+
+  <div th:if="${uloga == 'KUPAC'}">
+    <h4>Aktivne rezervacije</h4>
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Datum i vreme rezervacije</th>
+        <th scope="col">Ime kupca</th>
+        <th scope="col">Prezime kupca</th>
+        <th scope="col">Broj putnika</th>
+        <th scope="col">Destinacija</th>
+        <th scope="col">Smeštaj</th>
+        <th scope="col">Broj noćenja</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="rezervacija : ${listAktivneRezervacije}">
+        <td th:text="${rezervacija.id}"></td>
+        <td th:text="${#temporals.format(rezervacija.datumIVremeRezervacije, 'dd.MM.yyyy HH:mm:ss')}"></td>
+        <td th:text="${rezervacija.kupac.korisnik.ime}"></td>
+        <td th:text="${rezervacija.kupac.korisnik.prezime}"></td>
+        <td th:text="${rezervacija.brojPutnika}"></td>
+        <td th:text="${rezervacija.putovanje.nazivDestinacije}"></td>
+        <td th:text="${rezervacija.putovanje.smestajnaJedinica}"></td>
+        <td th:text="${rezervacija.putovanje.brojNocenja}"></td>
+      </tr>
+      </tbody>
+    </table>
+
+    <h4>Potvrđene rezervacije</h4>
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Datum i vreme rezervacije</th>
+        <th scope="col">Ime kupca</th>
+        <th scope="col">Prezime kupca</th>
+        <th scope="col">Broj putnika</th>
+        <th scope="col">Destinacija</th>
+        <th scope="col">Smeštaj</th>
+        <th scope="col">Broj noćenja</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="rezervacija : ${listPotvrdjeneRezervacije}">
+        <td th:text="${rezervacija.id}"></td>
+        <td th:text="${#temporals.format(rezervacija.datumIVremeRezervacije, 'dd.MM.yyyy HH:mm:ss')}"></td>
+        <td th:text="${rezervacija.kupac.korisnik.ime}"></td>
+        <td th:text="${rezervacija.kupac.korisnik.prezime}"></td>
+        <td th:text="${rezervacija.brojPutnika}"></td>
+        <td th:text="${rezervacija.putovanje.nazivDestinacije}"></td>
+        <td th:text="${rezervacija.putovanje.smestajnaJedinica}"></td>
+        <td th:text="${rezervacija.putovanje.brojNocenja}"></td>
+      </tr>
+      </tbody>
+    </table>
+    <h4>Istekle rezervacije</h4>
+    <table class="table">
+      <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Datum i vreme rezervacije</th>
+        <th scope="col">Ime kupca</th>
+        <th scope="col">Prezime kupca</th>
+        <th scope="col">Broj putnika</th>
+        <th scope="col">Destinacija</th>
+        <th scope="col">Smeštaj</th>
+        <th scope="col">Broj noćenja</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="rezervacija : ${listIstekleRezervacije}">
+        <td th:text="${rezervacija.id}"></td>
+        <td th:text="${#temporals.format(rezervacija.datumIVremeRezervacije, 'dd.MM.yyyy HH:mm:ss')}"></td>
+        <td th:text="${rezervacija.kupac.korisnik.ime}"></td>
+        <td th:text="${rezervacija.kupac.korisnik.prezime}"></td>
+        <td th:text="${rezervacija.brojPutnika}"></td>
+        <td th:text="${rezervacija.putovanje.nazivDestinacije}"></td>
+        <td th:text="${rezervacija.putovanje.smestajnaJedinica}"></td>
+        <td th:text="${rezervacija.putovanje.brojNocenja}"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</body>
+</html>

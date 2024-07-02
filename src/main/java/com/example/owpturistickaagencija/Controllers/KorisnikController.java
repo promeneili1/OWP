@@ -7,6 +7,7 @@ import com.example.owpturistickaagencija.Models.Rezervacija;
 import com.example.owpturistickaagencija.Models.Uloga;
 import com.example.owpturistickaagencija.Services.KorisnikService;
 import com.example.owpturistickaagencija.Services.KupacService;
+import com.example.owpturistickaagencija.Services.RezervacijaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,8 +27,8 @@ public class KorisnikController {
     private KorisnikService korisnikService;
     @Autowired
     private KupacService kupacService;
-//    @Autowired
-//    private RezervacijaService rezervacijaService;
+    @Autowired
+    private RezervacijaService rezervacijaService;
 
 
     @GetMapping("/registracija")
@@ -39,17 +40,17 @@ public class KorisnikController {
         return "Registracija";
     }
 
-    @GetMapping("/korisnici") // link na koji idu korisnici
+    @GetMapping("/korisnici") // link na koji idu euprava/korisnici
     public String showKorisniciList(Model model, HttpServletRequest request) throws UserNotFoundException {
         List<Korisnik> listKorisnici = korisnikService.findAll();
         model.addAttribute("test", listKorisnici); // prosledjivanje svih korisnika
 
-        //Cookie[] cookies = request.getCookies();
-        //if(korisnikService.checkCookies(cookies, Uloga.ADMINISTRATOR)){
+        Cookie[] cookies = request.getCookies();
+        if(korisnikService.checkCookies(cookies, Uloga.ADMINISTRATOR)){
             return "korisnici";
-        //}
+        }
 
-        //return "odbijen_pristup"; // stranica koju vraca
+        return "odbijen_pristup"; // stranica koju vraca
     }
     @GetMapping("/korisnici/{src}")
     public String showNewForm(@PathVariable("src") String src, Model model){
@@ -74,23 +75,35 @@ public class KorisnikController {
 
         if(korisnik.getUloga() == Uloga.KUPAC){
             Kupac kupac = new Kupac(novKorisnik);
-       //     kupacService.save(kupac);
+            kupacService.save(kupac);
 
         }
         ra.addFlashAttribute("message", "Korisnik je sacuvan");
         return "redirect:/index";
     }
 
-    @PostMapping ("/korisnici/update")
-    public String updateUser(Korisnik korisnik, RedirectAttributes ra) throws UserNotFoundException{
-        Korisnik stariKorisnik = korisnikService.get(korisnik.getId());
-        if(korisnik.getLozinka().isEmpty() || korisnik.getLozinka() == null){
-            korisnik.setLozinka(stariKorisnik.getLozinka());
+    @PostMapping("/korisnici/update")
+    public String updateUser(Korisnik user, HttpServletRequest request, RedirectAttributes ra) throws UserNotFoundException {
+        String newPassword = request.getParameter("newPassword");
+        String confirmPassword = request.getParameter("confirmPassword");
+
+        Korisnik stariKorisnik = korisnikService.get(user.getId());
+
+        if (newPassword != null && !newPassword.isEmpty()) {
+            if (newPassword.equals(confirmPassword)) {
+                user.setLozinka(newPassword);
+            } else {
+                ra.addFlashAttribute("message", "Lozinke se ne poklapaju");
+                return "redirect:/korisnici/edit/" + user.getId();
+            }
+        } else {
+            user.setLozinka(stariKorisnik.getLozinka());
         }
-        korisnik.setUloga(stariKorisnik.getUloga());
-        korisnikService.update(korisnik);
+
+        user.setUloga(stariKorisnik.getUloga());
+        korisnikService.update(user);
         ra.addFlashAttribute("message", "Korisnik je izmenjen");
-        return "redirect:/login";
+        return "redirect:/profil";
     }
 
     @GetMapping("/korisnici/edit/{id}")
@@ -110,7 +123,7 @@ public class KorisnikController {
     @GetMapping("/korisnici/delete/{id}")
     public String deleteUser(@PathVariable("id") Long id, RedirectAttributes ra){
         korisnikService.delete(id);
-      //  kupacService.delete(id);
+        kupacService.delete(id);
         ra.addFlashAttribute("message", "Korisnik je obrisan!");
         return "redirect:/korisnici";
     }
@@ -128,14 +141,18 @@ public class KorisnikController {
         else if(korisnik.getUloga().equals(Uloga.MENADZER)){
             model.addAttribute("uloga", "MENADZER");
         }
-//        else if(korisnik.getUloga().equals(Uloga.KUPAC)){
-//            model.addAttribute("uloga", "KUPAC");
-//            // Fetch only active reservations for the logged-in KUPAC
-//            List<Rezervacija> listAktivneRezervacije = rezervacijaService.getAktivneRezervacijeByKupacId(korisnik.getId());
-//            model.addAttribute("listAktivneRezervacije", listAktivneRezervacije);
-//        }
+        else if(korisnik.getUloga().equals(Uloga.KUPAC)){
+                model.addAttribute("uloga", "KUPAC");
+                // Fetch only active reservations for the logged-in KUPAC
+                List<Rezervacija> listAktivneRezervacije = rezervacijaService.getAktivneRezervacijeByKupacId(korisnik.getId());
+                model.addAttribute("listAktivneRezervacije", listAktivneRezervacije);
+
+                List<Rezervacija> listapotvrdjene = rezervacijaService.getAktivneRezervacijeByKupacId(korisnik.getId());
+                model.addAttribute("listPotvrdjeneRezervacije", listapotvrdjene);
+        }
 
 
         return "profil";
     }
 }
+
